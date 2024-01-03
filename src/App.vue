@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h1>根组件</h1>
+    <el-button type="primary">Primary</el-button>
   </div>
 </template>
-<script setup lang="ts">
-let x = 's'
-</script>
+<script setup lang="ts"></script>
