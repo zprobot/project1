@@ -3,4 +3,6 @@
     <h1>根组件</h1>
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+let x = 's'
+</script>
