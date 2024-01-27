@@ -33,5 +33,13 @@ export default defineStore('CategoryStore', () => {
       c3Arr.value = res.data
     }
   }
-  return { c1Arr, c1Id, c2Arr, c2Id, c3Arr, c3Id, getC1, getC2, getC3 }
+  const $reset = () => {
+    c1Arr.value = []
+    c1Id.value = undefined
+    c2Arr.value = []
+    c2Id.value = undefined
+    c3Arr.value = []
+    c3Id.value = undefined
+  }
+  return { c1Arr, c1Id, c2Arr, c2Id, c3Arr, c3Id, getC1, getC2, getC3, $reset }
 })
