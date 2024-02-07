@@ -13,6 +13,33 @@ export type SpuData = {
   spuSaleAttrList: SpuAttr[] | null
   spuImageList: SpuImage[] | null
 }
+type skuAttrV = {
+  attrId: number
+  valueId: number
+}
+type skuSaleV = {
+  saleAttrId: number
+  saleAttrValueId: number
+}
+export type SkuData = {
+  id?: number
+  createTime?: string
+  isSale?: number
+  category3Id: number | undefined
+  spuId: number | undefined
+  tmId: number | undefined
+  skuName: string
+  price: number | undefined
+  weight: string
+  skuDesc: string
+  skuAttrValueList: skuAttrV[] | null
+  skuSaleAttrValueList: skuSaleV[] | null
+  skuImageList?: SpuImage[] | null
+  skuDefaultImg: string
+}
+export interface SkuResponseData extends ResponseData {
+  data: SkuData[]
+}
 
 export type Records = SpuData[]
 
@@ -62,6 +89,7 @@ export type SpuAttr = {
   spuSaleAttrValueList: SpuAttrValue[]
   flag?: boolean
   saleAttrValue?: string
+  saleItem?: string
 }
 export interface SpuAttrResponseData extends ResponseData {
   data: SpuAttr[]

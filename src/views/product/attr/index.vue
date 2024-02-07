@@ -128,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, reactive, nextTick, onBeforeMount } from 'vue'
+import { watch, ref, reactive, nextTick, onBeforeUnmount } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { InputInstance } from 'element-plus'
 import useCategoryStore from '@/store/modules/category'
@@ -263,7 +263,7 @@ const save = async () => {
     ElMessage.error(attrParams.id ? '修改失败' : '添加失败')
   }
 }
-onBeforeMount(() => {
+onBeforeUnmount(() => {
   // 组件销毁时清理仓库数据
   categoryStore.$reset()
 })

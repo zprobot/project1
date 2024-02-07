@@ -26,6 +26,7 @@ export type Attr = {
   categoryId: number | undefined
   categoryLevel: number
   attrValueList: AttrValueList
+  attrItem?: string
 }
 export type AttrList = Attr[]
 export interface AttrResponseData extends ResposeData {
