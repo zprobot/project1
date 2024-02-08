@@ -45,8 +45,14 @@
             type="primary"
             icon="InfoFilled"
             title="完整信息"
+            @click="viewSkuInfo(row)"
           ></el-button>
-          <el-button type="primary" icon="Delete" title="删除"></el-button>
+          <el-button
+            type="primary"
+            icon="Delete"
+            title="删除"
+            @click="deleteSku(row)"
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -58,18 +64,81 @@
       layout="prev, pager, next, jumper,->,sizes,total"
       :total="total"
     />
+    <el-drawer v-model="drawer">
+      <template #header>
+        <h4>查看商品详情</h4>
+      </template>
+      <template #default>
+        <el-row style="margin: 10px 0">
+          <el-col :span="6">名称</el-col>
+          <el-col :span="18">{{ skuInfo?.skuName }}</el-col>
+        </el-row>
+        <el-row style="margin: 10px 0">
+          <el-col :span="6">描述</el-col>
+          <el-col :span="18">{{ skuInfo?.skuDesc }}</el-col>
+        </el-row>
+        <el-row style="margin: 10px 0">
+          <el-col :span="6">价格</el-col>
+          <el-col :span="18">{{ skuInfo?.price }}</el-col>
+        </el-row>
+        <el-row style="margin: 10px 0">
+          <el-col :span="6">平台属性</el-col>
+          <el-col :span="18">
+            <el-tag v-for="item in skuInfo?.skuAttrValueList" :key="item.id">
+              {{ item.attrName }}
+            </el-tag>
+          </el-col>
+        </el-row>
+        <el-row style="margin: 10px 0">
+          <el-col :span="6">销售属性</el-col>
+          <el-col :span="18">
+            <el-tag
+              v-for="item in skuInfo?.skuSaleAttrValueList"
+              :key="item.id"
+            >
+              {{ item.saleAttrName }}
+            </el-tag>
+          </el-col>
+        </el-row>
+        <el-row style="margin: 10px 0">
+          <el-col :span="6">商品图片</el-col>
+          <el-col :span="18">
+            <el-carousel :interval="4000" type="card" height="200px">
+              <el-carousel-item
+                v-for="item in skuInfo?.skuImageList"
+                :key="item.id"
+              >
+                <img :src="item.imgUrl" style="width: 100%; height: 100%" />
+              </el-carousel-item>
+            </el-carousel>
+          </el-col>
+        </el-row>
+      </template>
+    </el-drawer>
   </el-card>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, watchEffect } from 'vue'
-import { reqGetSku, reqUpSku, reqDowmSku } from '@/api/product/sku'
+import {
+  reqGetSku,
+  reqUpSku,
+  reqDowmSku,
+  reqSkuInfo,
+  reqDeleteSku,
+} from '@/api/product/sku'
 import { ElMessage } from 'element-plus'
-import type { SkuResponseData, SkuData } from '@/api/product/sku/type'
+import type {
+  SkuResponseData,
+  SkuInfoResponseData,
+  SkuData,
+} from '@/api/product/sku/type'
 let currentPage = ref<number>(1)
 let pageSize = ref<number>(10)
 let total = ref<number>(0)
 let records = ref<SkuData[]>([])
+let drawer = ref<boolean>(false)
+let skuInfo = ref<SkuData>()
 const getSku = async (current = 1, limit = 10) => {
   currentPage.value = current
   pageSize.value = limit
@@ -100,6 +169,25 @@ const updateSaleStatus = async (row: SkuData) => {
     }
   }
 }
+// 查看sku信息
+const viewSkuInfo = async (row: SkuData) => {
+  drawer.value = true
+  let res: SkuInfoResponseData = await reqSkuInfo(row.id!)
+  if (res.code == 200) {
+    skuInfo.value = res.data
+  }
+}
+// 删除某个sku
+const deleteSku = async (row: SkuData) => {
+  let res: any = await reqDeleteSku(row.id!)
+  if (res.code == 200) {
+    ElMessage.success('删除成功')
+    getSku(currentPage.value, pageSize.value)
+  } else {
+    ElMessage.error('删除失败')
+  }
+}
+
 watchEffect(() => {
   getSku(currentPage.value, pageSize.value)
 })
@@ -108,4 +196,20 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.el-carousel__item h3 {
+  color: #475669;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+  text-align: center;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+</style>
