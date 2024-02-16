@@ -25,7 +25,7 @@ request.interceptors.response.use(
   (error) => {
     // 失败的回调，处理网络错误
     let message: string = ''
-    const status = error.response.status // 获取状态码
+    const status = error.response.code // 获取状态码
     switch (status) {
       case 401:
         message = 'TOKEN过期'
