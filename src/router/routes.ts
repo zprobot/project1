@@ -94,7 +94,7 @@ export const routes = [
         component: () => import('@/views/acl/permission/index.vue'),
         name: 'permission',
         meta: {
-          title: '权限管理',
+          title: '菜单管理',
           show: true,
           icon: 'Monitor',
         },
