@@ -5,16 +5,16 @@ import setting from './setting'
 // 引入进度条样式
 import 'nprogress/nprogress.css'
 // 利用仓库token判断用户是否登录
-//import useUserStore from '@/store/modules/user'
+import useUserStore from '@/store/modules/user'
 // 组件外部使用pinia,需要先引入pinia
-//import pinia from '@/store'
-//const userStore = useUserStore(pinia)
+import pinia from '@/store'
+const userStore = useUserStore(pinia)
 // 全局前置守卫
 router.beforeEach(async (to) => {
   document.title = setting.title + '-' + to.meta.title
   nprogress.start()
   // 判断用户是否登录 !避免无限重定向
-  /*   if (!userStore.token && to.name !== 'login') {
+  if (!userStore.token && to.name !== 'login') {
     return {
       name: 'login',
       // 想访问的路径会被login接受
@@ -30,6 +30,8 @@ router.beforeEach(async (to) => {
     if (!userStore.userInfo.username && to.name !== 'login') {
       try {
         await userStore.getUserInfo()
+        // 刷新后，需要加载完毕才放行
+        return { ...to }
       } catch (error) {
         // token过期
         await userStore.logout()
@@ -39,7 +41,7 @@ router.beforeEach(async (to) => {
         }
       }
     }
-  } */
+  }
   // 其余情况直接放行
 })
 

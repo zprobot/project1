@@ -29,7 +29,7 @@ export const reqGetPermissions = (roleId: number) =>
   request.get<any, PermissionResponseData>(API.RULE_URL + roleId)
 export const reqAssignRule = (roleId: number, ruleId: number[]) =>
   request.post<any, any>(
-    `${API.ASSIGNRULE_URL}?roleId=${ruleId}&permissionId=${ruleId}`,
+    `${API.ASSIGNRULE_URL}?roleId=${roleId}&permissionId=${ruleId}`,
   )
 export const reqDeleteRole = (roleId: number) =>
   request.delete<any, any>(API.DELETE_URL + roleId)

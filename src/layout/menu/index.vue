@@ -44,8 +44,8 @@
 
 <script setup lang="ts" name="Menu">
 import { useRouter } from 'vue-router'
-const router = useRouter()
 defineProps(['menuList'])
+const router = useRouter()
 const goRoute = (e: any) => {
   router.push(e.index)
 }

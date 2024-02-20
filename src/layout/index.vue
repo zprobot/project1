@@ -10,7 +10,7 @@
           :default-active="route.path"
           :collapse="settingStore.fold ? true : false"
         >
-          <Menu :menuList="RouteStore.routesConst" />
+          <Menu :menuList="userStore.userRoutes" />
         </el-menu>
       </el-scrollbar>
     </aside>
@@ -31,12 +31,12 @@ import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
 import Main from './main/index.vue'
 import Tabbar from './tabbar/index.vue'
-import useRouteStore from '@/store/modules/routes'
+import useUserStore from '@/store/modules/user'
 import { useRoute } from 'vue-router'
 import useSettingStore from '@/store/modules/settings'
 // 使用路由实现默认激活
 let route = useRoute()
-let RouteStore = useRouteStore()
+let userStore = useUserStore()
 let settingStore = useSettingStore()
 </script>
 

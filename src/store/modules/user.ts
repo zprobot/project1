@@ -7,6 +7,20 @@ import type {
   logoutResponse,
 } from '@/api/user/type'
 import { ref, reactive } from 'vue'
+import { constRoutes, asyncRoutes, anyRoutes } from '@/router/routes'
+import router from '@/router'
+// 深拷贝
+import cloneDeep from 'lodash/cloneDeep'
+function fillAsyncRoutes(asyncRoutes: any, routes: string[]) {
+  return asyncRoutes.filter((item: any) => {
+    if (routes.includes(item.name)) {
+      if (item.children && item.children.length > 0) {
+        item.children = fillAsyncRoutes(item.children, routes)
+      }
+      return true
+    }
+  })
+}
 export default defineStore('User', () => {
   // token
   const token = ref(localStorage.getItem('TOKEN') as string)
@@ -15,6 +29,10 @@ export default defineStore('User', () => {
     username: '',
     avatar: '',
   })
+  // 用户路由
+  const userRoutes = ref<any>([...constRoutes])
+  // 用户按钮
+  const userButtons = ref<string[]>([])
   // 用户登录
   async function userLogin(data: loginForm) {
     const res: loginResponseData = await reqLogin(data)
@@ -35,6 +53,15 @@ export default defineStore('User', () => {
     if (res.code == 200) {
       userInfo.username = res.data.name
       userInfo.avatar = res.data.avatar
+      userButtons.value = res.data.buttons
+      // 深拷贝进行过滤，防止对原数组的污染
+      const userAsyncRoutes = fillAsyncRoutes(
+        cloneDeep(asyncRoutes),
+        res.data.routes,
+      )
+      userRoutes.value.push([...userAsyncRoutes, ...anyRoutes])
+      const routes = [...userAsyncRoutes, ...anyRoutes]
+      routes.forEach((route) => router.addRoute(route))
       return 'ok'
     } else {
       return Promise.reject(new Error(res.message))
@@ -53,5 +80,13 @@ export default defineStore('User', () => {
       return Promise.reject(new Error(res.message))
     }
   }
-  return { token, userLogin, getUserInfo, userInfo, logout }
+  return {
+    token,
+    userLogin,
+    getUserInfo,
+    userInfo,
+    logout,
+    userRoutes,
+    userButtons,
+  }
 })

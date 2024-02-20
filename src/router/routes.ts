@@ -1,5 +1,5 @@
 // 路由规则
-export const routes = [
+export const constRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
@@ -40,17 +40,8 @@ export const routes = [
     },
   },
   {
-    path: '/:pathMatch(.*)*',
-    redirect: '/404',
-    name: 'any',
-    meta: {
-      title: '任意',
-      show: false,
-    },
-  },
-  {
     path: '/screen',
-    name: 'screen',
+    name: 'Screen',
     component: () => import('@/views/screen/index.vue'),
     meta: {
       title: '数据大屏',
@@ -58,9 +49,12 @@ export const routes = [
       icon: 'Platform',
     },
   },
+]
+// 异步路由
+export const asyncRoutes = [
   {
     path: '/acl',
-    name: 'acl',
+    name: 'Acl',
     component: () => import('@/layout/index.vue'),
     meta: {
       title: '权限管理',
@@ -72,7 +66,7 @@ export const routes = [
       {
         path: '/acl/user',
         component: () => import('@/views/acl/user/index.vue'),
-        name: 'user',
+        name: 'User',
         meta: {
           title: '用户管理',
           show: true,
@@ -82,7 +76,7 @@ export const routes = [
       {
         path: '/acl/role',
         component: () => import('@/views/acl/role/index.vue'),
-        name: 'role',
+        name: 'Role',
         meta: {
           title: '角色管理',
           show: true,
@@ -92,7 +86,7 @@ export const routes = [
       {
         path: '/acl/permission',
         component: () => import('@/views/acl/permission/index.vue'),
-        name: 'permission',
+        name: 'Permission',
         meta: {
           title: '菜单管理',
           show: true,
@@ -103,7 +97,7 @@ export const routes = [
   },
   {
     path: '/product',
-    name: 'product',
+    name: 'Product',
     component: () => import('@/layout/index.vue'),
     meta: {
       title: '商品管理',
@@ -124,7 +118,7 @@ export const routes = [
       },
       {
         path: '/product/attrs',
-        name: 'attrs',
+        name: 'Attr',
         component: () => import('@/views/product/attr/index.vue'),
         meta: {
           title: '属性管理',
@@ -134,7 +128,7 @@ export const routes = [
       },
       {
         path: '/product/spu',
-        name: 'spu',
+        name: 'Spu',
         component: () => import('@/views/product/spu/index.vue'),
         meta: {
           title: 'SPU管理',
@@ -144,7 +138,7 @@ export const routes = [
       },
       {
         path: '/product/sku',
-        name: 'sku',
+        name: 'Sku',
         component: () => import('@/views/product/sku/index.vue'),
         meta: {
           title: 'SKU管理',
@@ -153,5 +147,17 @@ export const routes = [
         },
       },
     ],
+  },
+]
+// 任意路由
+export const anyRoutes = [
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
+    name: 'any',
+    meta: {
+      title: '任意',
+      show: false,
+    },
   },
 ]

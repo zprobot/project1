@@ -14,7 +14,8 @@ import '@/styles/index.scss'
 import '@/permission'
 // 引入仓库
 import pinia from './store'
-
+// 暗黑模式
+import 'element-plus/theme-chalk/dark/css-vars.css'
 const app = createApp(App)
 app.use(globalComponent)
 app.use(router)
@@ -22,4 +23,7 @@ app.use(pinia)
 app.use(ElementPlus, {
   locale: zhCn,
 })
+// 注册全局自定义指令
+import { hasButton } from './directive/has'
+hasButton(app)
 app.mount('#app')
